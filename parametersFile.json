@@ -1,0 +1,81 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": null
+    },
+    "storageAccountType": {
+      "value": "Premium_LRS"
+    },
+    "virtualNetworkUsage": {
+      "value": "new"
+    },
+    "virtualNetworkName": {
+      "value": "adfs-infra-vnet"
+    },
+    "virtualNetworkResourceGroupName": {
+      "value": "n/a"
+    },
+    "virtualNetworkAddressRange": {
+      "value": "10.0.0.0/16"
+    },
+    "internalSubnetName": {
+      "value": "Internal-sn"
+    },
+    "internalSubnetAddressRange": {
+      "value": "10.0.0.0/24"
+    },
+    "dmzSubnetAddressRange": {
+      "value": "10.0.1.0/24"
+    },
+    "dmzSubnetName": {
+      "value": "DMZ-sn"
+    },
+    "addc01NicIPAddress": {
+      "value": "10.0.0.101"
+    },
+    "addc02NicIPAddress": {
+      "value": "10.0.0.102"
+    },
+    "adfs01NicIPAddress": {
+      "value": "10.0.0.201"
+    },
+    "adfs02NicIPAddress": {
+      "value": "10.0.0.202"
+    },
+    "wap01NicIPAddress": {
+      "value": "10.0.1.101"
+    },
+    "wap02NicIPAddress": {
+      "value": "10.0.1.102"
+    },
+    "adfsLoadBalancerPrivateIpAddress": {
+      "value": "10.0.0.200"
+    },
+    "addcVmNamePrefix": {
+      "value": "dc"
+    },
+    "adfsVmNamePrefix": {
+      "value": "adfs"
+    },
+    "wapVmNamePrefix": {
+      "value": "wap"
+    },
+    "addcVMsSize": {
+      "value": "Standard_DS2_V2"
+    },
+    "adfsVMsSize": {
+      "value": "Standard_DS2_V2"
+    },
+    "wapVMsSize": {
+      "value": "Standard_DS2_v2"
+    },
+    "adminUsername": {
+      "value": null
+    },
+    "adminPassword": {
+      "value": null
+    }
+  }
+}
