@@ -187,8 +187,7 @@
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/ronnyvdbduvel/adfs-6vms-regular-template-based/master/",
-    "parametersUrl": "[concat(variables('baseUrl'),'/azuredeploy.parameters.json')]",
+    "baseUrl": "https://raw.githubusercontent.com/paulomarquesc/adfs-6vms-regular-template-based/master/",
     "storageAccountNamePrefix": "[concat(uniquestring(resourceGroup().id),'sa')]",
     "deployStorageAccountsUrl": "[concat(variables('baseUrl'),'/deployStorageAccounts.json')]",
     "deployPublicIPsUrl": "[concat(variables('baseUrl'),'/deployPublicIPs.json')]",
@@ -250,9 +249,16 @@
           "uri": "[variables('deployStorageAccountsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageAccountNamePrefix')]"
+          }
         }
       }
     },
@@ -266,9 +272,16 @@
           "uri": "[variables('deployPublicIPsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publicIpName": {
+            "value": "[variables('publicIpName')]"
+          },
+          "publicIPAddressType": {
+            "value": "[variables('publicIPAddressType')]"
+          }
         }
       }
     },
@@ -282,9 +295,13 @@
           "uri": "[variables('deployAvailabilitySetsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "availabilitySetNames": {
+            "value": "[variables('availabilitySetNames')]"
+          }
         }
       }
     },
@@ -301,9 +318,22 @@
           "uri": "[variables('deployVnetURL')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "virtualNetworkName": {
+            "value": "[parameters('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[parameters('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "resourceGroupName": {
+            "value": "[parameters('virtualNetworkResourceGroupName')]"
+          }
         }
       }
     },
@@ -321,9 +351,34 @@
           "uri": "[variables('deployLoadBalancersUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "loadBalancerNames": {
+            "value": "[variables('loadBalancerNames')]"
+          },
+          "lbfe": {
+            "value": "[variables('lbfe')]"
+          },
+          "lbbe": {
+            "value": "[variables('lbbe')]"
+          },
+          "rdpNats": {
+            "value": "[variables('rdpNats')]"
+          },
+          "lbPublicIpResourceIds": {
+            "value": "[variables('lbPublicIpResourceIds')]"
+          },
+          "subnetIds": {
+            "value": [
+              "[concat(reference('virtualNetworkDeployment').outputs.vnetId.value,'/subnets/',parameters('internalSubnetName'))]",
+              "[concat(reference('virtualNetworkDeployment').outputs.vnetId.value,'/subnets/',parameters('dmzSubnetName'))]"
+            ]
+          },
+          "adfsLoadBalancerPrivateIpAddress": {
+            "value": "[parameters('adfsLoadBalancerPrivateIpAddress')]"
+          }
         }
       }
     },
@@ -342,9 +397,48 @@
           "uri": "[variables('deployNicsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "ipAddresses": {
+            "value": [
+              "[parameters('addc01NicIPAddress')]",
+              "[parameters('addc02NicIPAddress')]",
+              "[parameters('adfs01NicIPAddress')]",
+              "[parameters('adfs02NicIPAddress')]",
+              "[parameters('wap01NicIPAddress')]",
+              "[parameters('wap02NicIPAddress')]"
+            ]
+          },
+          "nicNames": {
+            "value": [
+              "[concat(parameters('addcVmNamePrefix'),'1-nic')]",
+              "[concat(parameters('addcVmNamePrefix'),'2-nic')]",
+              "[concat(parameters('adfsVmNamePrefix'),'1-nic')]",
+              "[concat(parameters('adfsVmNamePrefix'),'2-nic')]",
+              "[concat(parameters('wapVmNamePrefix'),'1-nic')]",
+              "[concat(parameters('wapVmNamePrefix'),'2-nic')]"
+            ]
+          },
+          "subnetIds": {
+            "value": [
+              "[concat(reference('virtualNetworkDeployment').outputs.vnetId.value,'/subnets/',parameters('internalSubnetName'))]",
+              "[concat(reference('virtualNetworkDeployment').outputs.vnetId.value,'/subnets/',parameters('dmzSubnetName'))]"
+            ]
+          },
+          "adfsBEAddressPoolID": {
+            "value": "[concat(reference('loadBalancerDeployment').outputs.adfslbID.value,'/backendAddressPools/',variables('lbbe'))]"
+          },
+          "wapRDPNATRuleIDs": {
+            "value": [
+              "[concat(reference('loadBalancerDeployment').outputs.waplbID.value,'/inboundNatRules/',variables('rdpNats')[0])]",
+              "[concat(reference('loadBalancerDeployment').outputs.waplbID.value,'/inboundNatRules/',variables('rdpNats')[1])]"
+            ]
+          },
+          "wapBeAddressPoolID": {
+            "value": "[concat(reference('loadBalancerDeployment').outputs.waplbID.value,'/backendAddressPools/',variables('lbbe'))]"
+          }
         }
       }
     },
@@ -358,9 +452,16 @@
           "uri": "[variables('deployNsgsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "dmzSubnetAddressRange": {
+            "value": "[parameters('dmzSubnetAddressRange')]"
+          },
+          "internalSubnetAddressRange": {
+            "value": "[parameters('internalSubnetAddressRange')]"
+          }
         }
       }
     },
@@ -377,9 +478,31 @@
           "uri": "[variables('deployVmsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "vmNamePrefix": {
+            "value": "[parameters('addcVmNamePrefix')]"
+          },
+          "vmSize": {
+            "value": "[parameters('addcVMsSize')]"
+          },
+          "availabilitySetName": {
+            "value": "[variables('availabilitySetNames')[0]]"
+          },
+          "vmCount": {
+            "value": 2
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageAccountNamePrefix')]"
+          }
         }
       }
     },
@@ -396,9 +519,31 @@
           "uri": "[variables('deployVmsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "vmNamePrefix": {
+            "value": "[parameters('adfsVmNamePrefix')]"
+          },
+          "vmSize": {
+            "value": "[parameters('adfsVMsSize')]"
+          },
+          "availabilitySetName": {
+            "value": "[variables('availabilitySetNames')[1]]"
+          },
+          "vmCount": {
+            "value": 2
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageAccountNamePrefix')]"
+          }
         }
       }
     },
@@ -415,9 +560,31 @@
           "uri": "[variables('deployVmsUrl')]",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "[variables('ParametersUrl')]",
-          "contentVersion":"1.0.0.0"
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "vmNamePrefix": {
+            "value": "[parameters('wapVmNamePrefix')]"
+          },
+          "vmSize": {
+            "value": "[parameters('wapVMsSize')]"
+          },
+          "availabilitySetName": {
+            "value": "[variables('availabilitySetNames')[2]]"
+          },
+          "vmCount": {
+            "value": 2
+          },
+          "storageAccountNamePrefix": {
+            "value": "[variables('storageAccountNamePrefix')]"
+          }
         }
       }
     }
