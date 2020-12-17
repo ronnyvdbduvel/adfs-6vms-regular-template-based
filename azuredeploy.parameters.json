@@ -6,7 +6,7 @@
       "value": "West Europe"
     },
     "storageAccountType": {
-      "value": "Premium_LRS"
+      "value": "Standard_LRS"
     },
     "virtualNetworkUsage": {
       "value": "new"
@@ -18,40 +18,40 @@
       "value": "n/a"
     },
     "virtualNetworkAddressRange": {
-      "value": "100.100.0.0/16"
+      "value": "10.236.0.0/16"
     },
     "internalSubnetName": {
       "value": "Internal-sn"
     },
     "internalSubnetAddressRange": {
-      "value": "10.0.0.0/24"
+      "value": "10.236.100.0/24"
     },
     "dmzSubnetAddressRange": {
-      "value": "10.0.1.0/24"
+      "value": "10.236.101.0/24"
     },
     "dmzSubnetName": {
       "value": "DMZ-sn"
     },
     "addc01NicIPAddress": {
-      "value": "10.0.0.101"
+      "value": "10.236.100.1"
     },
     "addc02NicIPAddress": {
-      "value": "10.0.0.102"
+      "value": "10.236.100.2"
     },
     "adfs01NicIPAddress": {
-      "value": "10.0.0.201"
+      "value": "10.236.100.3"
     },
     "adfs02NicIPAddress": {
-      "value": "10.0.0.202"
+      "value": "10.236.100.4"
     },
     "wap01NicIPAddress": {
-      "value": "10.0.1.101"
+      "value": "10.236.101.1"
     },
     "wap02NicIPAddress": {
-      "value": "10.0.1.102"
+      "value": "10.236.101.2"
     },
     "adfsLoadBalancerPrivateIpAddress": {
-      "value": "10.0.0.200"
+      "value": "10.236.100.5"
     },
     "addcVmNamePrefix": {
       "value": "dc"
@@ -72,10 +72,10 @@
       "value": "Standard_DS2_v2"
     },
     "adminUsername": {
-      "value": null
+      "value": "Administrator"
     },
     "adminPassword": {
-      "value": null
+      "value": "1Fl3sB1er+*2"
     }
   }
 }
