@@ -33,25 +33,25 @@
       "value": "DMZ-sn"
     },
     "addc01NicIPAddress": {
-      "value": "10.236.100.1"
+      "value": "10.236.100.11"
     },
     "addc02NicIPAddress": {
-      "value": "10.236.100.2"
+      "value": "10.236.100.12"
     },
     "adfs01NicIPAddress": {
-      "value": "10.236.100.3"
+      "value": "10.236.100.13"
     },
     "adfs02NicIPAddress": {
-      "value": "10.236.100.4"
+      "value": "10.236.100.14"
     },
     "wap01NicIPAddress": {
-      "value": "10.236.101.1"
+      "value": "10.236.101.11"
     },
     "wap02NicIPAddress": {
-      "value": "10.236.101.2"
+      "value": "10.236.101.12"
     },
     "adfsLoadBalancerPrivateIpAddress": {
-      "value": "10.236.100.5"
+      "value": "10.236.100.15"
     },
     "addcVmNamePrefix": {
       "value": "dc"
